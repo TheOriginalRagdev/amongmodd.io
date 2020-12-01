@@ -1,0 +1,168 @@
+{
+     "triggers": [
+          {
+               "type": "secondTick"
+          }
+     ],
+     "conditions": [
+          {
+               "operator": "==",
+               "operandType": "boolean"
+          },
+          true,
+          true
+     ],
+     "actions": [
+          {
+               "type": "condition",
+               "conditions": [
+                    {
+                         "operandType": "boolean",
+                         "operator": "=="
+                    },
+                    {
+                         "function": "getVariable",
+                         "variableName": "Emergency Called"
+                    },
+                    true
+               ],
+               "then": [
+                    {
+                         "type": "setVariable",
+                         "value": {
+                              "function": "calculate",
+                              "items": [
+                                   {
+                                        "operator": "-"
+                                   },
+                                   {
+                                        "function": "getVariable",
+                                        "variableName": "Emergency Meetings time"
+                                   },
+                                   1
+                              ]
+                         },
+                         "variableName": "Emergency Meetings time",
+                         "comment": "set the time as -1 every second"
+                    },
+                    {
+                         "type": "forAllUnits",
+                         "unitGroup": {
+                              "function": "allUnits"
+                         },
+                         "actions": [
+                              {
+                                   "type": "setPlayerAttributeMax",
+                                   "attributeType": "rT6WbZuqVc",
+                                   "player": {
+                                        "function": "getOwner",
+                                        "entity": {
+                                             "function": "selectedUnit"
+                                        }
+                                   },
+                                   "number": 999999,
+                                   "comment": "set max value of emergency cooldown as 999999 for not can call other reunion"
+                              },
+                              {
+                                   "type": "setEntityAttribute",
+                                   "attribute": "rT6WbZuqVc",
+                                   "entity": {
+                                        "function": "selectedUnit"
+                                   },
+                                   "value": {
+                                        "function": "playerAttributeMax",
+                                        "attribute": "rT6WbZuqVc",
+                                        "entity": {
+                                             "function": "getOwner",
+                                             "entity": {
+                                                  "function": "selectedUnit"
+                                             }
+                                        }
+                                   },
+                                   "comment": "set emergency cooldown as 999999 for not can call other reunion"
+                              }
+                         ],
+                         "comment": "for all units"
+                    },
+                    {
+                         "type": "condition",
+                         "conditions": [
+                              {
+                                   "operator": "<",
+                                   "operandType": "number"
+                              },
+                              {
+                                   "function": "getVariable",
+                                   "variableName": "Emergency Meetings time"
+                              },
+                              0
+                         ],
+                         "then": [
+                              {
+                                   "type": "forAllUnits",
+                                   "unitGroup": {
+                                        "function": "allUnits"
+                                   },
+                                   "actions": [
+                                        {
+                                             "type": "setEntityAttribute",
+                                             "attribute": "speed",
+                                             "entity": {
+                                                  "function": "selectedUnit"
+                                             },
+                                             "value": 10,
+                                             "comment": "reset the speed for can move now"
+                                        },
+                                        {
+                                             "type": "setPlayerAttributeMax",
+                                             "attributeType": "rT6WbZuqVc",
+                                             "player": {
+                                                  "function": "getOwner",
+                                                  "entity": {
+                                                       "function": "selectedUnit"
+                                                  }
+                                             },
+                                             "number": 60,
+                                             "comment": "make the emergency cooldown reset"
+                                        },
+                                        {
+                                             "type": "setEntityAttribute",
+                                             "attribute": "rT6WbZuqVc",
+                                             "entity": {
+                                                  "function": "selectedUnit"
+                                             },
+                                             "value": {
+                                                  "function": "playerAttributeMax",
+                                                  "attribute": "rT6WbZuqVc",
+                                                  "entity": {
+                                                       "function": "getOwner",
+                                                       "entity": {
+                                                            "function": "selectedUnit"
+                                                       }
+                                                  }
+                                             },
+                                             "comment": "set emergency cooldown as 60(need wait)"
+                                        },
+                                        {
+                                             "type": "setVariable",
+                                             "value": false,
+                                             "variableName": "Emergency Called",
+                                             "comment": "set emergency called as false and now not can vote"
+                                        }
+                                   ],
+                                   "comment": "for all units"
+                              }
+                         ],
+                         "else": [],
+                         "comment": "if time of emergency = 0"
+                    }
+               ],
+               "else": [],
+               "comment": "if Emergency Called = true"
+          }
+     ],
+     "name": "After called a emergency(every second)",
+     "parent": "erJ9jYt7RN",
+     "key": "4oF4JI2TUz",
+     "order": 4
+}
