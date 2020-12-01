@@ -1,0 +1,188 @@
+{
+     "triggers": [
+          {
+               "type": "gameStart"
+          }
+     ],
+     "conditions": [
+          {
+               "operator": "==",
+               "operandType": "boolean"
+          },
+          true,
+          true
+     ],
+     "actions": [
+          {
+               "type": "condition",
+               "conditions": [
+                    {
+                         "operandType": "boolean",
+                         "operator": "=="
+                    },
+                    {
+                         "function": "getVariable",
+                         "variableName": "Started"
+                    },
+                    true
+               ],
+               "then": [
+                    {
+                         "type": "condition",
+                         "conditions": [
+                              {
+                                   "operator": "<",
+                                   "operandType": "number"
+                              },
+                              {
+                                   "function": "getPlayerAttribute",
+                                   "attribute": "rT6WbZuqVc",
+                                   "entity": {
+                                        "function": "getOwner",
+                                        "entity": {
+                                             "function": "getLastCastingUnit"
+                                        }
+                                   }
+                              },
+                              0
+                         ],
+                         "then": [
+                              {
+                                   "type": "forAllEntities",
+                                   "entityGroup": {
+                                        "function": "entitiesInRegion",
+                                        "region": {
+                                             "function": "getVariable",
+                                             "variableName": "emergency meeting"
+                                        }
+                                   },
+                                   "actions": [
+                                        {
+                                             "type": "showUiTextForEveryone",
+                                             "target": "center-lg",
+                                             "comment": "show center-lg"
+                                        },
+                                        {
+                                             "type": "updateUiTextForEveryone",
+                                             "target": "center-lg",
+                                             "value": "Discussion!",
+                                             "comment": "Update the center-lg to be Discussion"
+                                        },
+                                        {
+                                             "type": "setTimeOut",
+                                             "duration": 3000,
+                                             "actions": [
+                                                  {
+                                                       "type": "hideUiTextForEveryone",
+                                                       "target": "center-lg",
+                                                       "comment": "hide center-lg"
+                                                  }
+                                             ],
+                                             "comment": "set a little time to hide the center-lg"
+                                        },
+                                        {
+                                             "type": "forAllUnits",
+                                             "unitGroup": {
+                                                  "function": "allUnits"
+                                             },
+                                             "actions": [
+                                                  {
+                                                       "type": "setEntityAttribute",
+                                                       "attribute": "speed",
+                                                       "entity": {
+                                                            "function": "selectedUnit"
+                                                       },
+                                                       "value": 0,
+                                                       "comment": "set speed as 0 for not can move cause of the emergency"
+                                                  },
+                                                  {
+                                                       "type": "setVariable",
+                                                       "value": true,
+                                                       "variableName": "Emergency Called",
+                                                       "comment": "set Emergency Called as true for make the time -1 every second"
+                                                  }
+                                             ],
+                                             "comment": "for all units"
+                                        }
+                                   ],
+                                   "comment": "when in emergency meeting region"
+                              }
+                         ],
+                         "else": [],
+                         "comment": "if Cooldown = 0 = can press"
+                    },
+                    {
+                         "type": "condition",
+                         "conditions": [
+                              {
+                                   "operator": ">",
+                                   "operandType": "number"
+                              },
+                              {
+                                   "function": "getPlayerAttribute",
+                                   "attribute": "rT6WbZuqVc",
+                                   "entity": {
+                                        "function": "getOwner",
+                                        "entity": {
+                                             "function": "getLastCastingUnit"
+                                        }
+                                   }
+                              },
+                              0
+                         ],
+                         "then": [
+                              {
+                                   "type": "forAllEntities",
+                                   "entityGroup": {
+                                        "function": "entitiesInRegion",
+                                        "region": {
+                                             "function": "getVariable",
+                                             "variableName": "emergency meeting"
+                                        }
+                                   },
+                                   "actions": [
+                                        {
+                                             "type": "sendChatMessageToPlayer",
+                                             "message": {
+                                                  "function": "concat",
+                                                  "textA": "You not can call a emergency, wait ",
+                                                  "textB": {
+                                                       "function": "concat",
+                                                       "textA": {
+                                                            "function": "getPlayerAttribute",
+                                                            "attribute": "rT6WbZuqVc",
+                                                            "entity": {
+                                                                 "function": "getOwner",
+                                                                 "entity": {
+                                                                      "function": "getLastCastingUnit"
+                                                                 }
+                                                            }
+                                                       },
+                                                       "textB": " seconds..."
+                                                  }
+                                             },
+                                             "player": {
+                                                  "function": "getOwner",
+                                                  "entity": {
+                                                       "function": "getLastCastingUnit"
+                                                  }
+                                             },
+                                             "comment": "send chat message to player of not can call a emergency"
+                                        }
+                                   ],
+                                   "comment": "when in emergency meeting region"
+                              }
+                         ],
+                         "else": [],
+                         "comment": "if Cooldown = more of 0(1 to 60) = not can press"
+                    }
+               ],
+               "else": [],
+               "comment": "just can call emergency when the game starts"
+          }
+     ],
+     "name": "Innocents/Impostor call a emergency meeting",
+     "parent": "erJ9jYt7RN",
+     "key": "EMh26I2b6m",
+     "order": 3
+}
