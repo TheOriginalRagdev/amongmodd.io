@@ -1,0 +1,427 @@
+{
+     "triggers": [
+          {
+               "type": "secondTick"
+          }
+     ],
+     "conditions": [
+          {
+               "operator": "==",
+               "operandType": "boolean"
+          },
+          true,
+          true
+     ],
+     "actions": [
+          {
+               "type": "setVariable",
+               "value": {
+                    "function": "getPlayerCount"
+               },
+               "variableName": "playerCount",
+               "comment": "set variable playerCount as number of players in game(for less chance to be imposter)"
+          },
+          {
+               "type": "condition",
+               "conditions": [
+                    {
+                         "operator": "<",
+                         "operandType": "number"
+                    },
+                    {
+                         "function": "getVariable",
+                         "variableName": "playerCount"
+                    },
+                    3
+               ],
+               "then": [
+                    {
+                         "type": "condition",
+                         "conditions": [
+                              {
+                                   "operator": "<",
+                                   "operandType": "number"
+                              },
+                              {
+                                   "function": "getVariable",
+                                   "variableName": "@Start In"
+                              },
+                              0
+                         ],
+                         "then": [
+                              {
+                                   "type": "setVariable",
+                                   "value": true,
+                                   "variableName": "Started",
+                                   "comment": "-1 @Start In for second"
+                              }
+                         ],
+                         "else": [],
+                         "comment": "if Start In = 0 = start game!"
+                    },
+                    {
+                         "type": "condition",
+                         "conditions": [
+                              {
+                                   "operandType": "boolean",
+                                   "operator": "=="
+                              },
+                              {
+                                   "function": "getVariable",
+                                   "variableName": "Started"
+                              },
+                              true
+                         ],
+                         "then": [
+                              {
+                                   "type": "runScript",
+                                   "scriptName": "KoTqhiaaDb",
+                                   "comment": "make random player be imposter."
+                              }
+                         ],
+                         "else": [],
+                         "comment": "if the game starts"
+                    },
+                    {
+                         "type": "condition",
+                         "conditions": [
+                              {
+                                   "operandType": "number",
+                                   "operator": "=="
+                              },
+                              {
+                                   "function": "getNumberOfUnitsOfUnitType",
+                                   "unitType": "nifbljPmLm"
+                              },
+                              {
+                                   "function": "getNumberOfUnitsOfUnitType",
+                                   "unitType": "fighter"
+                              }
+                         ],
+                         "then": [
+                              {
+                                   "type": "setVariable",
+                                   "value": false,
+                                   "variableName": "Started",
+                                   "comment": "set Started as false,for reset the game"
+                              },
+                              {
+                                   "type": "setVariable",
+                                   "value": 20,
+                                   "variableName": "@Start In",
+                                   "comment": "set Start In as 20 for reset the time"
+                              },
+                              {
+                                   "type": "forAllUnits",
+                                   "unitGroup": {
+                                        "function": "allUnits"
+                                   },
+                                   "actions": [
+                                        {
+                                             "type": "condition",
+                                             "conditions": [
+                                                  {
+                                                       "operandType": "playerType",
+                                                       "operator": "=="
+                                                  },
+                                                  {
+                                                       "function": "playerTypeOfPlayer",
+                                                       "player": {
+                                                            "function": "getOwner",
+                                                            "entity": {
+                                                                 "function": "selectedUnit"
+                                                            }
+                                                       }
+                                                  },
+                                                  "VwoobekKE6"
+                                             ],
+                                             "then": [
+                                                  {
+                                                       "type": "showUiTextForPlayer",
+                                                       "target": "center-lg",
+                                                       "entity": {
+                                                            "function": "getOwner",
+                                                            "entity": {
+                                                                 "function": "selectedUnit"
+                                                            }
+                                                       },
+                                                       "comment": "show center-lg for imposters"
+                                                  },
+                                                  {
+                                                       "type": "updateUiTextForPlayer",
+                                                       "target": "center-lg",
+                                                       "value": "Victory!",
+                                                       "entity": {
+                                                            "function": "getOwner",
+                                                            "entity": {
+                                                                 "function": "selectedUnit"
+                                                            }
+                                                       },
+                                                       "comment": "make the center-lg has Victory! for imposters"
+                                                  },
+                                                  {
+                                                       "type": "changeUnitType",
+                                                       "entity": {
+                                                            "function": "selectedUnit"
+                                                       },
+                                                       "unitType": "fighter",
+                                                       "comment": "change imposters to innocent to make new imposters"
+                                                  }
+                                             ],
+                                             "else": [],
+                                             "comment": "for all imposters"
+                                        },
+                                        {
+                                             "type": "condition",
+                                             "conditions": [
+                                                  {
+                                                       "operandType": "playerType",
+                                                       "operator": "=="
+                                                  },
+                                                  {
+                                                       "function": "playerTypeOfPlayer",
+                                                       "player": {
+                                                            "function": "getOwner",
+                                                            "entity": {
+                                                                 "function": "selectedUnit"
+                                                            }
+                                                       }
+                                                  },
+                                                  "humanPlayer"
+                                             ],
+                                             "then": [
+                                                  {
+                                                       "type": "showUiTextForPlayer",
+                                                       "target": "center-lg",
+                                                       "entity": {
+                                                            "function": "getOwner",
+                                                            "entity": {
+                                                                 "function": "selectedUnit"
+                                                            }
+                                                       },
+                                                       "comment": "show center-lg for innocents"
+                                                  },
+                                                  {
+                                                       "type": "updateUiTextForPlayer",
+                                                       "target": "center-lg",
+                                                       "value": "Game Over!",
+                                                       "entity": {
+                                                            "function": "getOwner",
+                                                            "entity": {
+                                                                 "function": "selectedUnit"
+                                                            }
+                                                       },
+                                                       "comment": "make the center-lg has Game Over! for innocents"
+                                                  }
+                                             ],
+                                             "else": [],
+                                             "comment": "for all innocents"
+                                        }
+                                   ],
+                                   "comment": "for make can select unit"
+                              }
+                         ],
+                         "else": [],
+                         "comment": "if imposter = innocent = game over for innocents"
+                    },
+                    {
+                         "type": "condition",
+                         "conditions": [
+                              {
+                                   "operator": "<",
+                                   "operandType": "number"
+                              },
+                              {
+                                   "function": "getNumberOfUnitsOfUnitType",
+                                   "unitType": "nifbljPmLm"
+                              },
+                              0
+                         ],
+                         "then": [
+                              {
+                                   "type": "setVariable",
+                                   "value": false,
+                                   "variableName": "Started",
+                                   "comment": "set Started as false,for reset the game"
+                              },
+                              {
+                                   "type": "setVariable",
+                                   "value": 20,
+                                   "variableName": "@Start In",
+                                   "comment": "set Start In as 20 for reset the time"
+                              },
+                              {
+                                   "type": "forAllUnits",
+                                   "unitGroup": {
+                                        "function": "allUnits"
+                                   },
+                                   "actions": [
+                                        {
+                                             "type": "condition",
+                                             "conditions": [
+                                                  {
+                                                       "operandType": "playerType",
+                                                       "operator": "=="
+                                                  },
+                                                  {
+                                                       "function": "playerTypeOfPlayer",
+                                                       "player": {
+                                                            "function": "getOwner",
+                                                            "entity": {
+                                                                 "function": "selectedUnit"
+                                                            }
+                                                       }
+                                                  },
+                                                  "VwoobekKE6"
+                                             ],
+                                             "then": [
+                                                  {
+                                                       "type": "showUiTextForPlayer",
+                                                       "target": "center-lg",
+                                                       "entity": {
+                                                            "function": "getOwner",
+                                                            "entity": {
+                                                                 "function": "selectedUnit"
+                                                            }
+                                                       },
+                                                       "comment": "show center-lg for imposters"
+                                                  },
+                                                  {
+                                                       "type": "updateUiTextForPlayer",
+                                                       "target": "center-lg",
+                                                       "value": "Game Over!",
+                                                       "entity": {
+                                                            "function": "getOwner",
+                                                            "entity": {
+                                                                 "function": "selectedUnit"
+                                                            }
+                                                       },
+                                                       "comment": "make the center-lg has Game Over! for imposters"
+                                                  },
+                                                  {
+                                                       "type": "changeUnitType",
+                                                       "entity": {
+                                                            "function": "selectedUnit"
+                                                       },
+                                                       "unitType": "fighter",
+                                                       "comment": "change imposters to innocent to make new imposters"
+                                                  }
+                                             ],
+                                             "else": [],
+                                             "comment": "for all imposters"
+                                        },
+                                        {
+                                             "type": "condition",
+                                             "conditions": [
+                                                  {
+                                                       "operandType": "playerType",
+                                                       "operator": "=="
+                                                  },
+                                                  {
+                                                       "function": "playerTypeOfPlayer",
+                                                       "player": {
+                                                            "function": "getOwner",
+                                                            "entity": {
+                                                                 "function": "selectedUnit"
+                                                            }
+                                                       }
+                                                  },
+                                                  "humanPlayer"
+                                             ],
+                                             "then": [
+                                                  {
+                                                       "type": "showUiTextForPlayer",
+                                                       "target": "center-lg",
+                                                       "entity": {
+                                                            "function": "getOwner",
+                                                            "entity": {
+                                                                 "function": "selectedUnit"
+                                                            }
+                                                       },
+                                                       "comment": "show center-lg for innocents"
+                                                  },
+                                                  {
+                                                       "type": "updateUiTextForPlayer",
+                                                       "target": "center-lg",
+                                                       "value": "Victory!",
+                                                       "entity": {
+                                                            "function": "getOwner",
+                                                            "entity": {
+                                                                 "function": "selectedUnit"
+                                                            }
+                                                       },
+                                                       "comment": "make the center-lg has Victory! for innocents"
+                                                  }
+                                             ],
+                                             "else": [],
+                                             "comment": "for all innocents"
+                                        }
+                                   ],
+                                   "comment": "for make can select unit"
+                              }
+                         ],
+                         "else": [],
+                         "comment": "if imposters is 0 = innocents win"
+                    },
+                    {
+                         "type": "condition",
+                         "conditions": [
+                              {
+                                   "operandType": "boolean",
+                                   "operator": "=="
+                              },
+                              {
+                                   "function": "getVariable",
+                                   "variableName": "Started"
+                              },
+                              false
+                         ],
+                         "then": [
+                              {
+                                   "type": "showUiTextForEveryone",
+                                   "target": "top"
+                              },
+                              {
+                                   "type": "setVariable",
+                                   "value": {
+                                        "function": "calculate",
+                                        "items": [
+                                             {
+                                                  "operator": "-"
+                                             },
+                                             {
+                                                  "function": "getVariable",
+                                                  "variableName": "@Start In"
+                                             },
+                                             1
+                                        ]
+                                   },
+                                   "variableName": "@Start In",
+                                   "comment": "-1 @Start In for second"
+                              },
+                              {
+                                   "type": "updateUiTextForEveryone",
+                                   "target": "top",
+                                   "value": {
+                                        "function": "concat",
+                                        "textA": "Game starts in:",
+                                        "textB": {
+                                             "function": "getVariable",
+                                             "variableName": "@Start In"
+                                        }
+                                   }
+                              }
+                         ],
+                         "else": [],
+                         "comment": "if game no start but have 3 or more players"
+                    }
+               ],
+               "else": [],
+               "comment": "if the game have 3 players = the time -1 start"
+          }
+     ],
+     "name": "every second",
+     "parent": "erJ9jYt7RN",
+     "key": "4WpytMVxUF",
+     "order": 2
+}
