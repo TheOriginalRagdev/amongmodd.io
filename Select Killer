@@ -1,0 +1,171 @@
+{
+     "triggers": [],
+     "conditions": [
+          {
+               "operator": "==",
+               "operandType": "boolean"
+          },
+          true,
+          true
+     ],
+     "actions": [
+          {
+               "type": "while",
+               "conditions": [
+                    {
+                         "operator": "<",
+                         "operandType": "number"
+                    },
+                    {
+                         "function": "getNumberOfUnitsOfUnitType",
+                         "unitType": "nifbljPmLm"
+                    },
+                    {
+                         "function": "calculate",
+                         "items": [
+                              {
+                                   "operator": "*"
+                              },
+                              {
+                                   "function": "getPlayerCount"
+                              },
+                              {
+                                   "function": "getVariable",
+                                   "variableName": "beImpostor%"
+                              }
+                         ]
+                    }
+               ],
+               "actions": [
+                    {
+                         "type": "setVariable",
+                         "value": {
+                              "function": "getRandomNumberBetween",
+                              "min": 0,
+                              "max": {
+                                   "function": "calculate",
+                                   "items": [
+                                        {
+                                             "operator": "-"
+                                        },
+                                        {
+                                             "function": "getNumberOfUnitsOfUnitType",
+                                             "unitType": "fighter"
+                                        },
+                                        1
+                                   ]
+                              }
+                         },
+                         "variableName": "i*",
+                         "comment": "set number of innocents -1"
+                    },
+                    {
+                         "type": "setVariable",
+                         "value": 0,
+                         "variableName": "impostors",
+                         "comment": "impostors need be 0 to make a new selected unit"
+                    },
+                    {
+                         "type": "forAllUnits",
+                         "unitGroup": {
+                              "function": "allUnits"
+                         },
+                         "actions": [
+                              {
+                                   "type": "condition",
+                                   "conditions": [
+                                        {
+                                             "operandType": "unitType",
+                                             "operator": "=="
+                                        },
+                                        {
+                                             "function": "getUnitTypeOfUnit",
+                                             "entity": {
+                                                  "function": "selectedUnit"
+                                             }
+                                        },
+                                        "fighter"
+                                   ],
+                                   "then": [
+                                        {
+                                             "type": "condition",
+                                             "conditions": [
+                                                  {
+                                                       "operandType": "number",
+                                                       "operator": "=="
+                                                  },
+                                                  {
+                                                       "function": "getVariable",
+                                                       "variableName": "impostors"
+                                                  },
+                                                  0
+                                             ],
+                                             "then": [
+                                                  {
+                                                       "type": "changeUnitType",
+                                                       "entity": {
+                                                            "function": "selectedUnit"
+                                                       },
+                                                       "unitType": "nifbljPmLm",
+                                                       "comment": "make the selected unit(the choosed player)to imposter"
+                                                  },
+                                                  {
+                                                       "type": "assignPlayerType",
+                                                       "entity": {
+                                                            "function": "getOwner",
+                                                            "entity": {
+                                                                 "function": "selectedUnit"
+                                                            }
+                                                       },
+                                                       "playerType": "VwoobekKE6",
+                                                       "comment": "assign to imposter"
+                                                  },
+                                                  {
+                                                       "type": "break",
+                                                       "comment": "make this loop"
+                                                  }
+                                             ],
+                                             "else": [],
+                                             "comment": "if impostors = 0 = need 1 impostor"
+                                        }
+                                   ],
+                                   "else": [],
+                                   "comment": "the selected unit is innocent(for no select all units)"
+                              },
+                              {
+                                   "type": "setVariable",
+                                   "value": {
+                                        "function": "calculate",
+                                        "items": [
+                                             {
+                                                  "operator": "+"
+                                             },
+                                             {
+                                                  "function": "getVariable",
+                                                  "variableName": "impostors"
+                                             },
+                                             1
+                                        ]
+                                   },
+                                   "variableName": "impostors",
+                                   "comment": "set impostors as +1"
+                              },
+                              {
+                                   "type": "playerCameraSetZoom",
+                                   "player": {
+                                        "function": "getTriggeringPlayer"
+                                   },
+                                   "zoom": 1000
+                              }
+                         ],
+                         "comment": "make can select unit"
+                    }
+               ],
+               "comment": "make number of Impostors less of Innocents"
+          }
+     ],
+     "name": "Random player be Imposter",
+     "parent": "erJ9jYt7RN",
+     "key": "KoTqhiaaDb",
+     "order": 1
+}
